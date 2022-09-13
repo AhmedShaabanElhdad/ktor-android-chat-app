@@ -28,7 +28,21 @@ class MainActivity : ComponentActivity() {
             KtorChatingAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "login_screen" ){
+                        composable(route = "login_screen"){
+                            LoginScreen(onNavigate = navController::navigate)
+                        }
 
+                        composable(route = "chat_screen/{username}", arguments = listOf(
+                            navArgument(name = "username"){
+                                type = NavType.StringType
+                                nullable = true
+                            }
+                        )){
+                            ChatScreen(username = it.arguments?.getString("username"),)
+                        }
+                    }
                 }
             }
         }
